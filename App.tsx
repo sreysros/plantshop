@@ -18,8 +18,17 @@ const tabNavigatorOption = () => {
       borderTopLeftRadius: 30,
       borderTopRightRadius: 30,
       height: DeviceInfo.hasNotch() ? 80 : 60,
-      backgroundColor: '#243447',
+      backgroundColor: '#fff',
       borderTopWidth: 0,
+      shadowColor: "#161245",
+      shadowOffset: {
+        width: 0,
+        height: -4,
+      },
+      shadowOpacity: 0.10,
+      shadowRadius: 4,
+
+      elevation: 5,
       paddingTop: DeviceInfo.hasNotch() ? 25 : 10,
       position: 'absolute',
     },
