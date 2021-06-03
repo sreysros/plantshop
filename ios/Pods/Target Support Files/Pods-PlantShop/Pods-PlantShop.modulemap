@@ -1,0 +1,6 @@
+module Pods_PlantShop {
+  umbrella header "Pods-PlantShop-umbrella.h"
+
+  export *
+  module * { export * }
+}
