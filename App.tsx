@@ -9,14 +9,16 @@ import CartScreen from './app/screen/CartScreen';
 import ProfileScreen from './app/screen/ProfileScreen';
 import DeviceInfo from 'react-native-device-info';
 import {Images} from './app/tool';
-import {Image} from 'react-native';
+import {Alert, Button, Image, Platform, Text, View} from 'react-native';
+import BottomNavigator from './app/screen/component/tabBarBottom';
+import { createStackNavigator, HeaderStyleInterpolators, StackNavigationOptions } from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
 const tabNavigatorOption = () => {
   const tabBarOptions = {
     style: {
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
       height: DeviceInfo.hasNotch() ? 80 : 60,
       backgroundColor: '#fff',
       borderTopWidth: 0,
@@ -36,7 +38,24 @@ const tabNavigatorOption = () => {
   return tabBarOptions;
 };
 
-const MainNavigator = () => {
+const CustomIcon = () => {
+  return (
+<View style={{
+    position: 'absolute', top: -60,
+    width: 60, height: 60, borderRadius: 30, backgroundColor: '#44ACA0', justifyContent: 'center', shadowColor: "#1F244B",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 4, elevation: 5,
+  }}>
+    <Image style={{ alignSelf: 'center' }} source={Images.scan} />
+  </View>
+  )
+}
+
+const TabStack = () => {
   return (
     <Tab.Navigator tabBarOptions={tabNavigatorOption()}>
       <Tab.Screen
@@ -44,7 +63,7 @@ const MainNavigator = () => {
         component={HomeScreen}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({focused}) => <Image source={Images.home} />,
+          tabBarIcon: ({focused}) => <Image source={Images.home}/>,
         }}
       />
       <Tab.Screen
@@ -60,7 +79,7 @@ const MainNavigator = () => {
         component={ScanScreen}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({focused}) => <Image source={Images.scan} />,
+          tabBarIcon: ({ focused }) => <CustomIcon /> ,
         }}
       />
       <Tab.Screen
@@ -82,12 +101,76 @@ const MainNavigator = () => {
     </Tab.Navigator>
   );
 };
+const screenHeaderOption = () => {
+  const screenOption: StackNavigationOptions = {
+    headerStyleInterpolator: HeaderStyleInterpolators.forUIKit,
+    headerBackTitleVisible: false,
+    headerStyle: {
+      backgroundColor: 'red',
+      shadowOpacity: 0,
+      shadowRadius: 0,
+      elevation: 0,
+      height: DeviceInfo.hasNotch() ? 110 : 90,
+    },
+    headerLeftContainerStyle: {
+      paddingLeft: Platform.OS === 'ios' ? 10 : 0,
+    },
+    headerTintColor: '#0E1446',
+    headerTitleStyle: {
+      color: '#0E1446',
+    },
+    headerTitleAllowFontScaling: false,
+    headerBackTitle: ' ',
+    cardStyle: { backgroundColor: 'transparent' },
+    headerShown: false,
+    cardOverlayEnabled: true,
+    
+  };
+
+  return screenOption;
+};
+
+const HeaderLeft = () => {
+  return (
+    <View>
+      <Text>Hi, Sreysros</Text>
+    </View>
+  )
+}
+
+const HeaderRight = () => {
+  return (
+    <View>
+      <Image source={Images.notification} />
+    </View>
+  )
+}
+
+const Stack = createStackNavigator();
+const MainNavigator = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName={'HomeScreen'}
+      // screenOptions={screenHeaderOption()} 
+      screenOptions={{headerStyle:{backgroundColor: '#f7f7f7', borderBottomWidth: 0, borderColor: 'transparent'}, title: ''}}
+      mode="modal"
+      // headerMode="none"
+      >
+      <Stack.Screen
+        name={'HomeScreen'}
+        component={TabStack}
+      />
+      </Stack.Navigator>
+  )
+}
+
+
 
 const App = () => {
   return (
     <NavigationContainer>
       <MainNavigator />
-    </NavigationContainer>
+   </NavigationContainer>
   );
 };
 
